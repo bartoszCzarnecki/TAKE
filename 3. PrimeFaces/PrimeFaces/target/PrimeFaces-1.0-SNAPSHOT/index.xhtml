@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <p:tabView>
+            <p:tab title="Form">
+                <h:form>
+                    <p:growl id="growl" showDetail="true" />  
+                    <p:spinner id="spinner1" value="#{formBean.a}" required="true" />
+                    +
+                    <p:spinner id="spinner2" value="#{formBean.b}" required="true"/>
+                    <p:commandButton label="Calculate" title="Calculate"
+                                     update="growl result currentDate" 
+                                     action="#{formBean.calculate()}"/>
+                    =
+                    <h:outputText value="#{formBean.c}" id="result"/><br/>
+                    <h:outputText value="#{formBean.currentDate}" id="currentDate"></h:outputText>
+                </h:form>
+            </p:tab>
+            <p:tab title="Table">
+                <p:dataTable var="student" rows="2" paginator="true" value="#{tableBean.students}" sortMode="single" allowUnsorting="true">
+                    <p:column sortBy="#{student.lastName}" headerText="First name">
+                        <h:outputText value="#{student.firstName}"/>
+                    </p:column>
+                    <p:column sortBy="#{student.firstName}" headerText="Last name">
+                        <h:outputText value="#{student.lastName}"/>
+                    </p:column>
+                    <p:column sortBy="#{student.average}" headerText="Average">
+                        <h:outputText value="#{student.average}"/>
+                    </p:column>
+                </p:dataTable>
+            </p:tab>
+            <p:tab title="Chart">
+                <p:chart type="line" model="#{chartBean.chart}" />
+            </p:tab>
+            
+        </p:tabView>
+    </h:body>
+</html>
+
