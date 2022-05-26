@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div>
+        <h1>Calculations</h1>
+        <form>
+            x = <input type="text" id="x" />
+            y = <input type="text" id="y" />
+            <input type="button" id="calc" value="Call API (jQuery)" />
+            <input type="button" id="calc_js" value="Call API (vanilla JS)" />
+        </form>
+        x + y = <span id="sum"></span><br />
+        x - y = <span id="difference"></span><br />
+        x * y = <span id="product"></span><br />
+        x / y = <span id="quotient"></span><br />
+    </div>
+    <script type="text/javascript" defer>
+        $(document).ready(function () {
+            $("#calc").click(function () {
+                var x = $('#x').val();
+                var y = $('#y').val();
+                $.ajax({
+                    type: "GET",
+                    url: "/math",
+                    data: { x, y },
+
+                    success: resp => {
+                        document.getElementById("sum").textContent = resp.sum
+                        document.getElementById("difference").textContent = resp.difference
+                        document.getElementById("product").textContent = resp.product
+                        document.getElementById("quotient").textContent = resp.quotient
+                    }
+                });
+            });
+        });
+
+        document.getElementById('calc_js').addEventListener('click', () => {
+            const x = document.getElementById('x').value
+            const y = document.getElementById('y').value
+
+            var req = new XMLHttpRequest();
+            req.onload = function () {
+                var jsonResponse = JSON.parse(req.responseText);
+                document.getElementById("sum").textContent = jsonResponse.sum
+                document.getElementById("difference").textContent = jsonResponse.difference
+                document.getElementById("product").textContent = jsonResponse.product
+                document.getElementById("quotient").textContent = jsonResponse.quotient
+            }
+            req.open('GET', '/math?x=' + x+ '&y=' + y, true);
+            req.send();
+
+        })
+    </script>
+</body>
+</html>
